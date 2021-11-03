@@ -1,10 +1,13 @@
 package rob.myappcompany.timer;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private Button resetButton;
     private TextView timeTextView;
 
+    public List<TimeAbteil> getTimeList;
 
 
 
@@ -51,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         timeViewModel.getAllTime().observe(this, new Observer<List<Time>>() {
             @Override
             public void onChanged(List<Time> times) {
-                Log.d(TAG, "onChanged: "+ times.toString());
+                //Log.d(TAG, "onChanged: "+ times.toString());
 
             }
         });
@@ -66,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         startButton = findViewById(R.id.startButton);
         resetButton = findViewById(R.id.resetButton);
         timeTextView = findViewById(R.id.timeTextView);
+
     }
 
 
@@ -80,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 getAllTime1.observe(MainActivity.this, new Observer<List<Time>>() {
                     @Override
                     public void onChanged(List<Time> times) {
-                        Log.i(TAG, "onChanged: "+ times.toString());
+                        //Log.i(TAG, "onChanged: "+ times.toString());
                     }
                 });
 
@@ -133,11 +139,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startTimeTapped(View view) {
-        startTimer();
+
         if (timerStarted == false){
             timerStarted = true;
-
-
+            startTimer();
+            startButton.setText("resume");
+        }else {
+            timerStarted = false;
+            timerTask.cancel();
+            startButton.setText("start");
         }
     }
 
@@ -149,35 +159,64 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         timeNum++;
-                        timeTextView.setText(getTimerText());
+                        timeTextView.setText(getTimerText().get(0).getSeconds()+" : "+
+                                getTimerText().get(0).getMinutes() +" : "+
+                                getTimerText().get(0).getMilliseconds());
+
                     }
                 });
             }
         };
-        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+        timer.scheduleAtFixedRate(timerTask, 0, 10);
     }
 
-    private String getTimerText() {
+    private List<TimeAbteil> getTimerText() {
         int rounded = (int) Math.round(timeNum);
-        //Log.i(TAG, "getTimerText: "+ rounded);
+        //convert time to second
+        int milliseconds = ((rounded % 86400) % 3600) % 60;
+        int seconds = ((rounded % 86400) % 3600) / 60;
+        int minutes = ((rounded % 86400) / 3600);
 
-
-        int milliSeconds = ((rounded % 86400) / 3600);
-
-        int seconds = ((rounded % 86400) / 3600);
-
-        int minutes = ((rounded % 86400) % 3600) / 60;
-        int hours = ((rounded % 86400) % 3600) % 60;
-
-        return formatTime(seconds, minutes, hours);
+        return formatTime(milliseconds, seconds, minutes);
     }
 
-    private String formatTime(int seconds, int minutes, int hours) {
-
-        return String.format("%02d", seconds) + " : " + String.format("%02d", minutes) + " : "+ String.format("%02d", hours);
+    //format result time
+    private List<TimeAbteil> formatTime(int milliseconds, int seconds, int minutes) {
+        getTimeList = new ArrayList<>();
+        getTimeList.add(new TimeAbteil(Integer.parseInt(String.format("%02d", milliseconds)), Integer.parseInt(String.format("%02d", seconds)), Integer.parseInt(String.format("%02d", minutes))));
+        return getTimeList;
     }
 
     public void resetTimeTapped(View view) {
+        timeNum = 0.0;
 
+        alertTosaveTime();
+    }
+
+
+    public void alertTosaveTime(){
+        AlertDialog.Builder saveTime = new AlertDialog.Builder(this);
+        saveTime.setTitle(R.string.alertTitle);
+        saveTime.setMessage(R.string.alertMessage);
+        saveTime.setIcon(R.drawable.ic_baseline_save_24);
+        saveTime.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(MainActivity.this, SaveTimeActivity.class);
+                String milliSeconde = String.valueOf(getTimeList.get(0).getMilliseconds());
+                String seconde = String.valueOf(getTimeList.get(0).getSeconds());
+                String minute = String.valueOf(getTimeList.get(0).getMinutes());
+
+                String formatTimer = String.format("%s : %s : %s", minute,seconde,milliSeconde);
+                if (formatTimer != null){
+                    intent.putExtra("timerDataIntent", formatTimer);
+                    startActivity(intent);
+                }
+
+            }
+        });
+
+        saveTime.setNeutralButton("No", null);
+        saveTime.show();
     }
 }

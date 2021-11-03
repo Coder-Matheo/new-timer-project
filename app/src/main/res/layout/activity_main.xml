@@ -8,14 +8,12 @@
 
     <TextView
         android:id="@+id/timeTextView"
-        android:layout_width="158dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="92dp"
+        android:layout_width="246dp"
+        android:layout_height="104dp"
+        android:layout_marginTop="60dp"
         android:gravity="center"
-        android:text="Hello World!"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/startButton"
+        android:text="00:00:00"
+        android:textSize="50sp"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -25,7 +23,7 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="215dp"
+        android:layout_marginBottom="212dp"
         android:text="insert data"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,23 +33,24 @@
         android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:text="start"
+        android:layout_marginStart="67dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="80dp"
         android:onClick="startTimeTapped"
+        android:text="start"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/resetButton"
         app:layout_constraintTop_toBottomOf="@+id/timeTextView" />
 
     <Button
         android:id="@+id/resetButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="reset"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="96dp"
         android:onClick="resetTimeTapped"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="reset"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startButton" />
+        app:layout_constraintTop_toBottomOf="@+id/timeTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
