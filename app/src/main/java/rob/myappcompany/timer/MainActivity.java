@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
             timerStarted = true;
             startTimer();
             startButton.setText("resume");
+            resetButton.setEnabled(true);
         }else {
             timerStarted = false;
             timerTask.cancel();
@@ -187,14 +188,8 @@ public class MainActivity extends AppCompatActivity {
         return getTimeList;
     }
 
-    public void resetTimeTapped(View view) {
-        timeNum = 0.0;
 
-        alertTosaveTime();
-    }
-
-
-    public void alertTosaveTime(){
+    public void resetTimeTapped(View view){
         AlertDialog.Builder saveTime = new AlertDialog.Builder(this);
         saveTime.setTitle(R.string.alertTitle);
         saveTime.setMessage(R.string.alertMessage);
@@ -216,7 +211,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        saveTime.setNeutralButton("No", null);
+        saveTime.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                timeNum = 0.0;
+                resetButton.setEnabled(false);
+                timeTextView.setText(getTimerText().get(0).getSeconds()+" : "+
+                        getTimerText().get(0).getMinutes() +" : "+
+                        getTimerText().get(0).getMilliseconds());
+
+
+            }
+        });
         saveTime.show();
     }
 }

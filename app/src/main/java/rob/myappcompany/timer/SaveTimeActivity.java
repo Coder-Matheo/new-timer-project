@@ -10,7 +10,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -33,7 +36,8 @@ public class SaveTimeActivity extends AppCompatActivity {
     private EditText descriptionEditText;
     private ImageView imageView;
     private TextView timeShowTextView;
-
+    private Intent intent;
+    private String timeData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +46,13 @@ public class SaveTimeActivity extends AppCompatActivity {
 
         init();
         choose_add_image();
+        done_image_to_DB();
 
-
-
-
-        Intent intent = getIntent();
-        String i = intent.getStringExtra("timerDataIntent");
-        timeShowTextView.setText(i);
+        intent = getIntent();
+        timeData = intent.getStringExtra("timerDataIntent");
+        timeShowTextView.setText(timeData);
     }
 
- 
     public void init(){
         doneButton = findViewById(R.id.doneButton);
         chooseButton = findViewById(R.id.chooseButton);
@@ -97,7 +98,6 @@ public class SaveTimeActivity extends AppCompatActivity {
             try {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
 
-
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                 imageView.setImageBitmap(bitmap);
             }catch (FileNotFoundException e){
@@ -107,5 +107,60 @@ public class SaveTimeActivity extends AppCompatActivity {
 
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    private void done_image_to_DB() {
+
+        if (!descriptionEditText.getText().equals(" ")){
+            doneButton.setEnabled(true);
+        }else {
+            doneButton.setEnabled(false);
+        }
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    if (!descriptionEditText.getText().equals(" ") && !timeData.equals(" ")){
+
+                        try {
+                            Time time = new Time(timeData.trim(),
+                                    descriptionEditText.getText().toString().trim(),
+                                    imageViewToByte(imageView));
+                            insertAsyncTask insertAsyncTask = new insertAsyncTask();
+                            insertAsyncTask.execute(time);
+
+                            Intent intent = new Intent(SaveTimeActivity.this, TimeListActivity.class);
+                            startActivity(intent);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    private byte[] imageViewToByte(ImageView image) {
+        Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
+
+
+    class insertAsyncTask extends AsyncTask<Time, Void, Void>{
+        @Override
+        protected Void doInBackground(Time... times) {
+            MyRoomDatabase.getInstance(getApplicationContext())
+                    .timerDao()
+                    .insert(times[0]);
+
+            return null;
+        }
     }
 }

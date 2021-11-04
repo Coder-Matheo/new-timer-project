@@ -13,23 +13,23 @@
         android:text="Choose Image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.82"
+        app:layout_constraintHorizontal_bias="0.938"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.409" />
+        app:layout_constraintVertical_bias="0.341" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxHeight="100dp"
         android:maxWidth="100dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="54dp"
-        android:layout_marginBottom="372dp"
+        android:maxHeight="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.572"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descriptionEditText"
+        app:layout_constraintVertical_bias="0.675"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
@@ -39,6 +39,7 @@
         android:layout_marginTop="43dp"
         android:layout_marginEnd="34dp"
         android:text="Done"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,12 +62,12 @@
         android:layout_width="152dp"
         android:layout_height="51dp"
         android:layout_marginStart="2dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="60dp"
         android:gravity="center_horizontal|center_vertical"
         android:text="TextView"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/doneButton"
-        app:layout_constraintHorizontal_bias="0.61"
+        app:layout_constraintHorizontal_bias="0.83"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
