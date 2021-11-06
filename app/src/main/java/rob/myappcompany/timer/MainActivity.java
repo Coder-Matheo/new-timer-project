@@ -194,6 +194,8 @@ public class MainActivity extends AppCompatActivity {
         saveTime.setTitle(R.string.alertTitle);
         saveTime.setMessage(R.string.alertMessage);
         saveTime.setIcon(R.drawable.ic_baseline_save_24);
+
+
         saveTime.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -223,6 +225,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        saveTime.show();
+        //separate layout to into AlertDialog
+        View view1 = getLayoutInflater().inflate(R.layout.dialog_saving_time, null);
+        ImageView dialog_img_in_layout = view1.findViewById(R.id.dialogImageView);
+        dialog_img_in_layout.setImageResource(R.drawable.save_time_img);
+        saveTime.setView(view1);
+        AlertDialog dialogWithLayoutBulider = saveTime.create();
+        dialogWithLayoutBulider.show();
     }
 }

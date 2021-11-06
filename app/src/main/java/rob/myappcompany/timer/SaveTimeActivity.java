@@ -97,15 +97,12 @@ public class SaveTimeActivity extends AppCompatActivity {
 
             try {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
-
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                 imageView.setImageBitmap(bitmap);
             }catch (FileNotFoundException e){
                 e.printStackTrace();
             }
         }
-
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -120,8 +117,9 @@ public class SaveTimeActivity extends AppCompatActivity {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("TAG", "onClick: "+ imageView.getDrawable());
                 try {
-                    if (!descriptionEditText.getText().equals(" ") && !timeData.equals(" ")){
+                    //if (!descriptionEditText.getText().equals(" ") && !timeData.equals(" ") && !imageView.getDrawable().equals(null)){
 
                         try {
                             Time time = new Time(timeData.trim(),
@@ -130,12 +128,17 @@ public class SaveTimeActivity extends AppCompatActivity {
                             insertAsyncTask insertAsyncTask = new insertAsyncTask();
                             insertAsyncTask.execute(time);
 
-                            Intent intent = new Intent(SaveTimeActivity.this, TimeListActivity.class);
-                            startActivity(intent);
+                            //send Value through Intent to RecyclerView
+                            Intent intentDataToRecycler = new Intent(SaveTimeActivity.this, TimeListActivity.class);
+                            //intentDataToRecycler.putExtra("timeDataToRecycler", timeData.trim());
+                            //intentDataToRecycler.putExtra("descriptionDataToRecycler", descriptionEditText.getText().toString().trim());
+                            //intentDataToRecycler.putExtra("imageDataToRecycler", imageViewToByte(imageView));
+                            startActivity(intentDataToRecycler);
+
                         }catch (Exception e){
                             e.printStackTrace();
                         }
-                    }
+                    //}
                 }catch (Exception e){
                     e.printStackTrace();
                 }
