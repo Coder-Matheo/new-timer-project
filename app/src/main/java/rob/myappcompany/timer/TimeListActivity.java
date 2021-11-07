@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Canvas;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
