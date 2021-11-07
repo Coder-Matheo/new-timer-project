@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
 import android.content.Intent;
@@ -39,6 +40,7 @@ public class SaveTimeActivity extends AppCompatActivity {
     private Intent intent;
     private String timeData;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +61,6 @@ public class SaveTimeActivity extends AppCompatActivity {
         descriptionEditText = findViewById(R.id.descriptionEditText);
         imageView = findViewById(R.id.imageView);
         timeShowTextView = findViewById(R.id.timeShowTextView);
-
-
-
     }
 
     private void choose_add_image() {
@@ -117,34 +116,21 @@ public class SaveTimeActivity extends AppCompatActivity {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("TAG", "onClick: "+ imageView.getDrawable());
                 try {
-                    //if (!descriptionEditText.getText().equals(" ") && !timeData.equals(" ") && !imageView.getDrawable().equals(null)){
+                    Time time = new Time(timeData.trim(),
+                            descriptionEditText.getText().toString().trim(),
+                            imageViewToByte(imageView));
+                    insertAsyncTask insertAsyncTask = new insertAsyncTask();
+                    insertAsyncTask.execute(time);
 
-                        try {
-                            Time time = new Time(timeData.trim(),
-                                    descriptionEditText.getText().toString().trim(),
-                                    imageViewToByte(imageView));
-                            insertAsyncTask insertAsyncTask = new insertAsyncTask();
-                            insertAsyncTask.execute(time);
-
-                            //send Value through Intent to RecyclerView
-                            Intent intentDataToRecycler = new Intent(SaveTimeActivity.this, TimeListActivity.class);
-                            //intentDataToRecycler.putExtra("timeDataToRecycler", timeData.trim());
-                            //intentDataToRecycler.putExtra("descriptionDataToRecycler", descriptionEditText.getText().toString().trim());
-                            //intentDataToRecycler.putExtra("imageDataToRecycler", imageViewToByte(imageView));
-                            startActivity(intentDataToRecycler);
-
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                    //}
+                    //send Value through Intent to RecyclerView
+                    Intent intentToRecycler = new Intent(SaveTimeActivity.this, TimeListActivity.class);
+                    startActivity(intentToRecycler);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
             }
         });
-
     }
 
     private byte[] imageViewToByte(ImageView image) {

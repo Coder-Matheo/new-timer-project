@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     public List<TimeAbteil> getTimeList;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,14 +55,15 @@ public class MainActivity extends AppCompatActivity {
         timeViewModel.getAllTime().observe(this, new Observer<List<Time>>() {
             @Override
             public void onChanged(List<Time> times) {
-                //Log.d(TAG, "onChanged: "+ times.toString());
+                Log.d(TAG, "onChanged: "+ times.toString());
+
 
             }
         });
 
         init();
         insertFunc();
-        getAllTimeFunc();
+
     }
     public void init(){
         button = findViewById(R.id.button);
@@ -71,30 +71,7 @@ public class MainActivity extends AppCompatActivity {
         startButton = findViewById(R.id.startButton);
         resetButton = findViewById(R.id.resetButton);
         timeTextView = findViewById(R.id.timeTextView);
-
     }
-
-
-    private void getAllTimeFunc() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                LiveData<List<Time>> getAllTime1 = MyRoomDatabase.getInstance(getApplicationContext())
-                        .timerDao()
-                        .getAllTime();
-
-                getAllTime1.observe(MainActivity.this, new Observer<List<Time>>() {
-                    @Override
-                    public void onChanged(List<Time> times) {
-                        //Log.i(TAG, "onChanged: "+ times.toString());
-                    }
-                });
-
-            }
-        });
-
-    }
-
 
     private byte[] imageViewToByte(ImageView image) {
         Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
@@ -132,8 +109,6 @@ public class MainActivity extends AppCompatActivity {
             MyRoomDatabase.getInstance(getApplicationContext())
                     .timerDao()
                     .insert(times[0]);
-
-            Log.i(TAG, "doInBackground: + Inserted");
             return null;
         }
     }
@@ -190,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void resetTimeTapped(View view){
+        timerTask.cancel();
         AlertDialog.Builder saveTime = new AlertDialog.Builder(this);
         saveTime.setTitle(R.string.alertTitle);
         saveTime.setMessage(R.string.alertMessage);

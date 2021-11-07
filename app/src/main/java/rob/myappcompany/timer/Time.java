@@ -58,7 +58,8 @@ public class Time {
         this.timerDescription = timerDescription;
     }
 
-    public byte[] getTimerImg() {
+    public byte[] getTimerImg()
+    {
         return timerImg;
     }
 

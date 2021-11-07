@@ -44,4 +44,13 @@ dependencies {
     //ViewModel and LiveData
     def lifecycle_version = "2.1.0"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
+    //swiperefreshlayout Library
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    //Swipe Left and Right Library
+    implementation "it.xabaras.android:recyclerview-swipedecorator:1.2.1"
+
+    //design color and Image swiper Library
+    implementation "com.google.android.material:material:1.0.0"
 }
