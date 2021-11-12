@@ -2,6 +2,7 @@ package rob.myappcompany.timer;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -14,15 +15,18 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,9 +45,11 @@ public class MainActivity extends AppCompatActivity {
     private Button startButton;
     private Button resetButton;
     private TextView timeTextView;
-
+    private ProgressBar progressBar;
+    View view;
+    Handler holder;
     public List<TimeAbteil> getTimeList;
-
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,16 +69,55 @@ public class MainActivity extends AppCompatActivity {
 
         init();
         insertFunc();
+        backgroundColorFun();
 
+        progressBarFun();
     }
+
     public void init(){
         button = findViewById(R.id.button);
         timer = new Timer();
         startButton = findViewById(R.id.startButton);
         resetButton = findViewById(R.id.resetButton);
         timeTextView = findViewById(R.id.timeTextView);
+        progressBar = findViewById(R.id.progressBar);
     }
 
+    private void backgroundColorFun() {
+        view = this.getWindow().getDecorView();
+        view.setBackgroundColor(ContextCompat.getColor(this, R.color.purple_200));
+    }
+
+    private void progressBarFun(){
+
+        progressBar.setMax(60);
+        progressBar.setMin(1);
+
+
+        holder = new Handler();
+        holder.postDelayed(new Runnable() {
+            int i = 1;
+
+            @Override
+            public void run() {
+                i += 1;
+                Log.i(TAG, "run: "+i);
+                holder.postDelayed(this, 100);
+
+                Random random = new Random();
+                int r2 = random.nextInt(60);
+                progressBar.setProgress(r2);
+                Log.i(TAG, "progressBarFun: "+ progressBar.getProgress());
+            }
+        }, 1);
+
+
+
+
+
+
+
+    }
     private byte[] imageViewToByte(ImageView image) {
         Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

@@ -3,10 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/NewAndroidCourse/Timer/app/src/main/res/drawable/progressbar_style.xml" value="0.23125" />
         <entry key="..\:/NewAndroidCourse/Timer/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/NewAndroidCourse/Timer/app/src/main/res/layout/activity_save_time.xml" value="0.30344202898550726" />
         <entry key="..\:/NewAndroidCourse/Timer/app/src/main/res/layout/activity_time_list.xml" value="0.2635416666666667" />
         <entry key="..\:/NewAndroidCourse/Timer/app/src/main/res/layout/dialog_saving_time.xml" value="0.3016304347826087" />
+        <entry key="..\:/NewAndroidCourse/Timer/app/src/main/res/layout/progressbar_style_large.xml" value="0.19479166666666667" />
         <entry key="..\:/NewAndroidCourse/Timer/app/src/main/res/layout/row_item.xml" value="0.2957427536231884" />
         <entry key="..\:/NewAndroidCourse/Timer/app/src/main/res/layout/row_item_recycler.xml" value="0.2980072463768116" />
       </map>

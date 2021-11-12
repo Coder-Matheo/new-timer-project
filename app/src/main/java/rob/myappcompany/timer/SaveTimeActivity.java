@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -17,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -46,6 +48,7 @@ public class SaveTimeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save_time);
 
+        View view = findViewById(android.R.id.content).getRootView();
         init();
         choose_add_image();
         done_image_to_DB();
@@ -53,6 +56,8 @@ public class SaveTimeActivity extends AppCompatActivity {
         intent = getIntent();
         timeData = intent.getStringExtra("timerDataIntent");
         timeShowTextView.setText(timeData);
+
+        hideAndShowKeyboard(2, view);
     }
 
     public void init(){
@@ -69,9 +74,23 @@ public class SaveTimeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 ActivityCompat.requestPermissions(SaveTimeActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         REQUEST_CODE_GALLERY);
+
+                hideAndShowKeyboard(1, view);
             }
         });
     }
+    
+    public void hideAndShowKeyboard(int choose, View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (choose == 1){
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);    
+        }else if (choose == 2){
+            inputMethodManager.showSoftInput(descriptionEditText, InputMethodManager.SHOW_FORCED);
+        }
+    }
+
+
+
 
 
     @Override
