@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
 import android.content.Context;
@@ -16,11 +15,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +34,7 @@ public class SaveTimeActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_GALLERY = 999;
 
     private Button doneButton;
-    private Button chooseButton;
+    private ImageButton chooseButton;
     private EditText descriptionEditText;
     private ImageView imageView;
     private TextView timeShowTextView;
@@ -66,6 +65,8 @@ public class SaveTimeActivity extends AppCompatActivity {
         descriptionEditText = findViewById(R.id.descriptionEditText);
         imageView = findViewById(R.id.imageView);
         timeShowTextView = findViewById(R.id.timeShowTextView);
+
+
     }
 
     private void choose_add_image() {
