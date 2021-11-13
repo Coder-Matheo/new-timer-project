@@ -3,7 +3,6 @@ package rob.myappcompany.timer;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -26,7 +25,6 @@ import android.widget.TextView;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
     private Button startButton;
     private Button resetButton;
     private TextView timeTextView;
-    private ProgressBar progressBar;
+    private ProgressBar progressBarSecond;
+    private ProgressBar progressBarMinute;
+    private TextView text_status_second;
+    private TextView text_status_minute;
     View view;
     Handler holder;
     public List<TimeAbteil> getTimeList;
@@ -80,43 +81,42 @@ public class MainActivity extends AppCompatActivity {
         startButton = findViewById(R.id.startButton);
         resetButton = findViewById(R.id.resetButton);
         timeTextView = findViewById(R.id.timeTextView);
-        progressBar = findViewById(R.id.progressBar);
+        progressBarSecond = findViewById(R.id.progressBarSecond);
+        progressBarMinute = findViewById(R.id.progressBarMinute);
+        text_status_minute = findViewById(R.id.text_status_minute);
+        text_status_second = findViewById(R.id.text_status_second);
     }
 
     private void backgroundColorFun() {
         view = this.getWindow().getDecorView();
-        view.setBackgroundColor(ContextCompat.getColor(this, R.color.purple_200));
+        view.setBackgroundColor(ContextCompat.getColor(this, R.color.gray));
     }
 
     private void progressBarFun(){
 
-        progressBar.setMax(60);
-        progressBar.setMin(1);
-
+        progressBarSecond.setMax(60);
+        progressBarSecond.setMin(1);
+        progressBarMinute.setMax(60);
+        progressBarMinute.setMin(1);
 
         holder = new Handler();
         holder.postDelayed(new Runnable() {
-            int i = 1;
 
             @Override
             public void run() {
-                i += 1;
-                Log.i(TAG, "run: "+i);
-                holder.postDelayed(this, 100);
 
-                Random random = new Random();
-                int r2 = random.nextInt(60);
-                progressBar.setProgress(r2);
-                Log.i(TAG, "progressBarFun: "+ progressBar.getProgress());
+                holder.postDelayed(this, 100);
+                int min = getTimerText().get(0).getMinutes();
+                int sec = getTimerText().get(0).getSeconds();
+                progressBarSecond.setProgress(min);
+                progressBarMinute.setProgress(sec);
+
+                text_status_minute.setText(String.valueOf(sec));
+                text_status_second.setText(String.valueOf(min));
+
+
             }
         }, 1);
-
-
-
-
-
-
-
     }
     private byte[] imageViewToByte(ImageView image) {
         Bitmap bitmap = ((BitmapDrawable) image.getDrawable()).getBitmap();
@@ -180,10 +180,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         timeNum++;
-                        timeTextView.setText(getTimerText().get(0).getSeconds()+" : "+
-                                getTimerText().get(0).getMinutes() +" : "+
-                                getTimerText().get(0).getMilliseconds());
-
+                        timeTextView.setText(String.valueOf(getTimerText().get(0).getMilliseconds()));
+                        //getTimerText().get(0).getSeconds()+" : "+ getTimerText().get(0).getMinutes() +" : "+
                     }
                 });
             }
